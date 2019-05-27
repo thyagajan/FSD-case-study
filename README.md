@@ -1,43 +1,17 @@
-# CMatches - A Case Study
+# CMatches - A Case Study(FSD SBA case study)
 
-## Problem Statement
+## About the Application
 
 Cricket is one of international sport and it is widely popular in India.
  
-This case study is about showing current and old cricket matches played around the world. Also the details about each match including score and other statistics has to be displayed.
+This case study is about showing cricket matches played around the world. Also it displays the cricket score for the past matches.
 
-Build a system to find current cricket matches, bookmark favourite matches and recommend most liked/favourite matches to user.
+CMatches application allows the user to find cricket matches, bookmark favourite matches and recommend most liked/favourite matches to user.
 
-## Requirements
-
-### The application needs to fetch cricket matches from the following API.
+## Thirdparty API
+This application uses the following api provider to find the cricket matches and the score details
 https://www.cricapi.com/
 
-Refer the following URLs to explore more on the cricket match APIs.
-https://www.cricapi.com/how-to-use.aspx
-https://www.cricapi.com/how-to-use/next-matches-api.aspx
-https://www.cricapi.com/how-to-use/match-api.aspx
-https://www.cricapi.com/how-to-use/scores-api.aspx
-
-### A frontend where the user can register/login to the application, find current or old cricket matches, add interested matches to favourite list and view recommended matches.
-### The upcoming cricket schedule can be displayed on the home page as a calendar as a quick view to the user. This can be viewed after successful login into the application.
-### The complete match statistics can be displayed for a selected cricket match.
-### User can add a match to favourite list and should be able to view favourite matches.
-### A recommendation engine should be able to store all the unique favourite matches from all the users and maintain counter for number of users added a particular match into favourite list. 
-### An option to view recommended matches should be available on frontend. 
-
-## Microservices/Modules
-
-- UserService - should be able to manage user accounts.
-- UI (User interface) -  should be able to
-    - View cricket calendar
-    - View current matches
-    - Add a match to favourite list
-    - view favourite matches
-    - view recommended matches
-- UI should be responsive which can run smoothly on various devices 
-- FavouriteService - should be able to store all the favourite matches for a user
-- MatchRecommendationService - should be able to store all the unique favourite matches from all the users and maintain counter for number of users added a particular match into favourite list.
 
 ## Tech Stack
 
@@ -48,51 +22,97 @@ https://www.cricapi.com/how-to-use/scores-api.aspx
 - CI (Gitlab Runner)
 - Docker, Docker Compose
 
-## Flow of Modules
+## Modules
 
-- Building frontend:
-  1. Building responsive views:
-    - Register/Login
-    - Cricket Matches - populating from external API
-    - Build a view to show favourite matches
-    - Build a view to show recommended matches
-  2. Using Services to populate these data in views
-  3. Stitching these views using Routes and Guards
-  4. Making the UI Responsive
-  5. E2E test cases and unit test cases
-  6. Writing CI configuration file
-  7. Dockerize the frontend
+- CMatchesUI frontend: Runs on Port 8080
+    
+    - http://localhost:8080
+    - Built on Angular 7 and angular material components.
+    - UI is responsive and runs smoothly on different mobile and IPAD devices. 
+    - Using 'Angular flex layout' to achieve responsiveness.
+    - Image is availale on docker hub (tnagaraj/matchesuiapp:v1)
+    - It has the following views 
+    
+        - Register 
+            - Allows the user to register themself with First Name, Last name, user name and password.
+    
+        - Login 
+            - Allows the user to login to the application.
+    
+        - Matches 
+            - Shows the current and next matches using cricapi.com. 
+            - It displays the matches in list format and can be filtered by given date to view the cricket calendar. 
+            - allows to display the cricket score(if available) 
+            - user can bookmark a particular match.
+            
+        - Favourites 
+            - displays the user's favorites in a list view 
+            - has the capability to filter the matches by a date. 
+            - allows user to remove the matches from the favourites
+            - view cricket score.
+            
+        - recommendations
+            - displayes the cricket matches in the order of most liked by the users including the current user. 
+            - Allows the user to add it to their favourites.
+            - Allows the user to view the score
+            - Filter by a specific date.
+            
+        - Logout
+            - Redirects to Login component.
+            
+     
 
-- Building the UserService
-  1. Creating a server in Spring Boot to facilitate user registration and login using JWT token and MySQL
-  2. Writing swagger documentation
-  3. Unit Testing
-  4. Write CI Configuration
-  5. Dockerize the application
-  6. Write docker-compose file to build both frontend and backend application
+- UserService(Port :8081)
 
-- Create an API Gateway which can serve UI and API Request from same host
+    - Uses Spring boot, JWT and MYSQL.
+    - Runs on port 8081.
+    - has registration and login operations.
+    - Image is available on docker hub(tnagaraj/userservice:v1)
+    - More documentation can be found at 
+        http://localhost:8081/swagger-ui.html.
 
-- Building the FavouriteService
-  1. Building a server in Spring Boot to facilitate CRUD operation over favourite matches stored in MySQL
-  2. Writing Swagger Documentation
-  3. Build a Producer for RabbitMQ which:
-    - i. Produces events like what user added into favourite list
-  4. Write Unit Test Cases
-  5. Write CI Configuration
-  6. Dockerize the application
-  7. Update the docker-compose
 
-- Building the MatchRecommendationService
-  1. Building a Consumer for RabbitMQ
-     - i. On a new event generated Update the recommendations in the system
-     - ii. Maintain list of recommended matches based on what user added into favourite list and keep counter for number of users added a particular match into favourite list
-  2. Build an API to get Recommendations
-  3. Writing Swagger Documentation
-  4. Write Unit Test Cases
-  5. Write CI Configuration
-  6. Dockerize the application
-  7. Update the docker-compose
-  8. Update the API Gateway
+- FavouriteService(Port : 8082)
 
-- Demonstrate the entire application
+    - Built on Spring boot, MongoDB. 
+    - Runs on port 8082
+    - Produces the match object to recommendation service using Rabbit MQ.
+    - Image is available on docker hub(tnagaraj/favouriteservice:v1)
+    - More documentation can be found about the API at
+        http://localhost:8082/swagger-ui.html
+        
+  
+
+- MatchRecommendationService(Port : 8084)
+
+    - Built on Spring boot, MongoDB. 
+    - Runs on port 8084
+    - Consumes the match object from favourite service using Rabbit MQ.
+    - Image is available on docker hub(tnagaraj/matchrecommendationservice:v1)
+    - More documentation can be found about the API at
+        http://localhost:8084/swagger-ui.html
+    
+- Eureka Server (Port :8083)
+
+    - Netflix's discovery service
+    - userservice, favouritesservice and matchrecommendationservice are registered as clients.
+    - Image is availabr on docker hub(tnagaraj/eurekaserver:cmatch)
+
+- Zuulservice( Port : 8085)
+
+    - Netflix's proxy service.
+    - Used by UI as a single service to connect to different microservices.
+    - Image is available on docker hub(tnagaraj/zuulservice:cmatch)
+    - Uses filter to verify the JWT token.
+    
+    
+## How to run the application.
+Since both the frontend and backend application are dockerized, it is pretty simple to run the application.
+Download the application from git lab and run the following command at the root directory
+
+docker-compose up.
+
+access the application at 
+http://localhost:8080
+
+
