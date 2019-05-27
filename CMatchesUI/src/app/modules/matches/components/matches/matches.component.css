@@ -1,0 +1,16 @@
+.mat-table{
+    width :100%;
+}
+
+.dateCol{
+    margin-top:5vh;
+}
+
+.timeCol{
+    margin-bottom:5vh;
+}
+
+.filter{
+    margin-top: 2vh;
+    text-align: center;
+}

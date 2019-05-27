@@ -1,0 +1,29 @@
+.container{
+    padding-top:15vh;
+    padding-bottom:4vh;
+    min-height: 80vh;
+    max-height: 80vh;
+    background-image: url("src/assets/images/cricket.jpg");
+
+}
+
+.mat-card{
+    text-align: center;
+    opacity: 0.9;
+}
+
+.mat-card-header{
+    flex-direction: column;
+}
+
+.loginCard{
+    flex:none;
+}
+
+.mat-card-title{
+    padding-bottom:4vh;
+}
+
+.mat-icon{
+    margin-right: 2vh;
+}

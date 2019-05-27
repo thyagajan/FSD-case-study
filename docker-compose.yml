@@ -1,0 +1,101 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    healthcheck:
+      test: "exit 0"
+
+  userservice:
+    image: tnagaraj/userservice:v1
+    restart: always
+    network_mode: host
+    container_name: userservicecontainer
+    depends_on:
+      - mysql
+      - eurekaserver
+      - rabbitmq
+    ports:
+      - 8081:8081
+    healthcheck:
+      test: "exit 0"
+
+  favouriteservice:
+    image: tnagaraj/favouriteservice:v1
+    restart: always
+    network_mode: host
+    container_name: favouriteservicecontainer
+    depends_on:
+      - mongo
+      - eurekaserver
+      - rabbitmq
+    ports:
+      - 8082:8082
+    healthcheck:
+      test: "exit 0"
+
+  eurekaserver:
+    image: tnagaraj/eurekaserver:cmatch
+    restart: always
+    network_mode: host
+    container_name: eurekaservercontainer
+    ports:
+      - 8083:8083
+    healthcheck:
+      test: "exit 0"
+
+  matchrecommendationservice:
+    image: tnagaraj/matchrecommendationservice:v1
+    restart: always
+    network_mode: host
+    container_name: recommendationservicecontainer
+    ports:
+      - 8084:8084
+    healthcheck:
+      test: "exit o"
+
+  zuulservice:
+    image: tnagaraj/zuulservice:cmatch
+    restart: always
+    network_mode: host
+    container_name: zuulservicecontainer
+    depends_on:
+      - eurekaserver
+    ports:
+      - 8085:8085
+    healthcheck:
+      test: "exit 0"
+
+  matchesapp:
+    image: tnagaraj/matchesuiapp:v1
+    network_mode: host
+    container_name: matchesappcontainer
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: "exit 0"
+
+  mongo:
+    image: mongo:3.2-jessie
+    network_mode: host
+    container_name: mongocontainer
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: "exit 0"
+
+  mysql:
+    image: mysql:5.5
+    ports:
+      - 3306:3306
+    container_name: mysqlcontainer
+    network_mode: host
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: userdatabase
+      MYSQL_USER: approot
+      MYSQL_PASSWORD: root123
+    healthcheck:
+      test: "exit 0"

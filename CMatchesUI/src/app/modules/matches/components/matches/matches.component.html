@@ -1,0 +1,72 @@
+
+<div id ="containter">
+  <div class="filter">
+    <mat-form-field color="warn">
+      <input matInput (dateInput)="filterEvent($event)" [matDatepicker]="picker" placeholder="Choose a date to filter">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Date Column -->
+      <ng-container  matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td  mat-cell *matCellDef="let element"> 
+            <div color="primary" class="dateCol">
+              {{element.date | date: 'fullDate'}}
+            
+            </div>
+            <div color="primary" class="timeCol">
+              {{element.date | date: 'shortTime'}}
+            </div> 
+          </td>
+        </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      </ng-container>
+
+
+      <!-- Description Column -->
+      <ng-container matColumnDef="desc">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element" color="warn"> 
+          {{element.description}} 
+          <button *ngIf="'recommendations' === url" mat-icon-button matTooltip="{{element.count}} users liked it">
+              <mat-icon color="accent"   aria-label="info">info</mat-icon>
+          </button>
+          
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+            <button *ngIf="'favourites' !== url" mat-icon-button matTooltip="Add the match to favourites">
+                <mat-icon color="primary"  (click)='addToFavourites(element)' aria-label="favorite">favorite</mat-icon>
+            </button>
+            
+            <button *ngIf="'favourites' === url"  mat-icon-button matTooltip="Remove the match from favourites">
+              <mat-icon color="primary"  (click)='removeFromFavourites(element)' aria-label="favorite">delete</mat-icon>
+           </button>
+
+            <button color="warn" mat-icon-button matTooltip="View the score for this match">
+                <mat-icon aria-label="info"  (click)='getScore(element)'>assignment</mat-icon>
+            </button>
+            
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator   showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+

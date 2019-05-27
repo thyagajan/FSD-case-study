@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+body,html{
+    margin:0;
+    width : 100vw;
+}
+
+.mat-menu-content{
+    color:#fff;
+    display: flex;
+    flex-direction: column;
+}
+
+

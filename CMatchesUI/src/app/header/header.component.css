@@ -1,0 +1,32 @@
+.material-icons{
+    font-size:1.2em;
+}
+.brand{
+    margin-right:auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#logo{
+    margin:auto;
+}
+
+.mat-toolbar{
+    display: flex;
+}
+.mat-menu-item{
+    font-family: 'Stylish', sans-serif;
+    font-size: 1.2em;
+}
+.mat-button{
+    font-family: 'Stylish', sans-serif;
+    font-size:1.2em;
+    color:#fff;
+}
+
+
+
+.mat-toolbar{
+    font-family: 'Stylish', sans-serif !important;
+}
+

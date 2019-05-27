@@ -1,0 +1,29 @@
+<mat-toolbar class="header" color="primary">
+  <mat-toolbar-row>
+    <div class="brand">
+        <img id="logo" src="../../assets/icons/cricket.png" height="32" width="32">
+        <span>CMatches</span>
+    </div>
+    <div fxHide="true" fxShow.gt-sm="true" id="menu">
+      <button class = "mat-button" [routerLink]="['matches']" mat-button>Matches</button>
+      <button class="mat-button-favourites" [routerLink]="['favourites']" mat-button>Favourites</button>
+      <button class="mat-button-recommendations" [routerLink]="['recommendations']" mat-button>Recommendations</button>
+      <button class="mat-button-logout" (click)="logout()" mat-button>Logout</button>
+
+    </div>
+    <div >
+      <button fxShow="true" fxHide.gt-sm="true" mat-icon-button [matMenuTriggerFor]="mobilemenu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div class="mobile-menu">
+            <mat-menu #mobilemenu="matMenu" >
+                <button class = "mat-button" [routerLink]="['matches']" mat-button>Matches</button>
+                <button class="mat-button-favourites" [routerLink]="['favourites']" mat-button>Favourites</button>
+                <button class="mat-button-recommendations" [routerLink]="['recommendations']" mat-button>Recommendations</button>
+                <button class="mat-button-logout" (click)="logout()" mat-button>Logout</button>
+            </mat-menu>
+        </div>
+        
+      </div>
+  </mat-toolbar-row>
+</mat-toolbar>
